@@ -16,13 +16,13 @@ import java.util.List;
 public interface RegistrationRepository extends JpaRepository<RegistrationEntity, Integer> {
     @Query("SELECT reg.course FROM registration reg WHERE reg.student.id = :studentId")
     List<CourseEntity> getStudentCourses(@Param("studentId") int studentId);
-
+    
     @Query("SELECT reg.student FROM registration reg WHERE reg.course.id = :courseId")
     List<StudentEntity> getCourseStudents(@Param("courseId") int courseId);
-
+    
     @Query("SELECT COUNT(reg) > 0 FROM registration reg WHERE reg.student.id = :studentId AND reg.course.id = :courseId")
     boolean existsByStudentIdAndCourseId(@Param("studentId") int studentId, @Param("courseId") int courseId);
-
+    
     @Modifying
     @Transactional
     @Query("DELETE FROM registration reg WHERE reg.student.id = :studentId AND reg.course.id = :courseId")

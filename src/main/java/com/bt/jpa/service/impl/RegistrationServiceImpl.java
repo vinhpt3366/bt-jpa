@@ -18,27 +18,27 @@ import java.util.Optional;
 public class RegistrationServiceImpl implements RegistrationService {
     private final CourseRepository courseReposity;
     private final StudentRepository studentRepository;
-
+    
     private final RegistrationRepository registrationRepository;
-
-
+    
+    
     @Autowired
     public RegistrationServiceImpl(CourseRepository courseReposity, StudentRepository studentRepository, RegistrationRepository registrationRepository) {
         this.courseReposity = courseReposity;
         this.studentRepository = studentRepository;
         this.registrationRepository = registrationRepository;
     }
-
+    
     @Override
     public List<CourseEntity> getStudentCourses(int studentId) {
         return registrationRepository.getStudentCourses(studentId);
     }
-
+    
     @Override
     public List<StudentEntity> getCourseStudents(int courseId) {
         return registrationRepository.getCourseStudents(courseId);
     }
-
+    
     @Override
     public int registerCourses(int studentId, List<Integer> courseIds) {
         if (courseIds == null || courseIds.isEmpty()) {
@@ -65,7 +65,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
         return result;
     }
-
+    
     @Override
     public RegistrationEntity registerStudentToCourse(int studentId, int courseId) {
         if (!(courseId > 0)) {
@@ -84,7 +84,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
         return registration;
     }
-
+    
     @Override
     public int unregisterStudentFromCourse(int studentId, int courseId) {
         boolean registration = registrationRepository.existsByStudentIdAndCourseId(studentId, courseId);
@@ -94,5 +94,5 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
         return result;
     }
-
+    
 }

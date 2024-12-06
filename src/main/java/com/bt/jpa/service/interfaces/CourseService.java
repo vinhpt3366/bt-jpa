@@ -8,10 +8,10 @@ import java.util.Optional;
 
 public interface CourseService {
     List<CourseEntity> findByDurationGreaterThan(double hours);
-
+    
     long countCourses();
-
+    
     Optional<CourseEntity> findById(int id);
-
+    
     List<CourseEntity> searchCourses(CourseSearchRequest request);
 }

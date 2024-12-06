@@ -10,8 +10,8 @@ import java.util.List;
 @Repository
 public interface StudentRepository extends JpaRepository<StudentEntity, Integer>, JpaSpecificationExecutor<StudentEntity> {
     boolean existsByEmail(String email);
-
+    
     boolean existsById(int id);
-
+    
     List<StudentEntity> searchByNameContaining(String keyword);
 }

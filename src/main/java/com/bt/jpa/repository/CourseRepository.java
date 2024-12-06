@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface CourseRepository extends JpaRepository<CourseEntity, Integer> {
     List<CourseEntity> findByDurationGreaterThan(double hours);
-
+    
     List<CourseEntity> findAll(Specification<CourseEntity> spec, Pageable pageable);
 }

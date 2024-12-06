@@ -17,7 +17,7 @@ import java.util.List;
 public class CourseController {
     private final CourseService courseService;
     private final RegistrationService registrationService;
-
+    
     @Autowired
     public CourseController(CourseService courseService, RegistrationService registrationService) {
         this.courseService = courseService;
@@ -31,7 +31,7 @@ public class CourseController {
 //        }
 //        return ResponseEntity.notFound().build();
 //    }
-
+    
     @GetMapping
     public ResponseEntity<?> getCourses(
             @RequestParam(required = false) Double durationGreaterThan,
@@ -47,22 +47,22 @@ public class CourseController {
                     .status(HttpStatus.BAD_REQUEST)
                     .body("Duration must be greater than 0");
         }
-
+        
         CourseSearchRequest courseSearchRequest = new CourseSearchRequest();
         courseSearchRequest.setPage(page);
         courseSearchRequest.setSize(size);
         courseSearchRequest.setSort(sort);
-
+        
         List<CourseEntity> coursePage = courseService.searchCourses(courseSearchRequest);
-
+        
         return ResponseEntity.ok(coursePage);
     }
-
+    
     @GetMapping("/count")
     public ResponseEntity<?> getCountCourses() {
         return ResponseEntity.ok(courseService.countCourses());
     }
-
+    
     @GetMapping("/{courseId}/students")
     public ResponseEntity<?> searchByName(@PathVariable int courseId) {
         List<StudentEntity> responseEntities = registrationService.getCourseStudents(courseId);
@@ -72,7 +72,7 @@ public class CourseController {
                     .body("Get Students failed. Please try again!");
         } else {
             return ResponseEntity.ok(responseEntities);
-
+            
         }
     }
 }

@@ -19,13 +19,13 @@ import java.util.Optional;
 public class StudentController {
     private final StudentService studentService;
     private final RegistrationService registrationService;
-
+    
     @Autowired
     public StudentController(StudentService studentService, RegistrationService registrationService) {
         this.studentService = studentService;
         this.registrationService = registrationService;
     }
-
+    
     @GetMapping
     public ResponseEntity<?> getStudents(
             @RequestParam(required = false) Integer id
@@ -43,7 +43,7 @@ public class StudentController {
 //        }
 //        return ResponseEntity.notFound().build();
 //    }
-
+    
     @GetMapping("/search")
     public ResponseEntity<List<StudentEntity>> searchStudents(
             @RequestParam(required = false) String name,
@@ -60,12 +60,12 @@ public class StudentController {
         searchRequest.setPage(page);
         searchRequest.setSize(size);
         searchRequest.setSort(sort);
-
+        
         List<StudentEntity> result = studentService.searchStudents(searchRequest);
-
+        
         return ResponseEntity.ok(result);
     }
-
+    
     @GetMapping("/{studentId}/courses")
     public ResponseEntity<?> searchByName(@PathVariable int studentId) {
         List<CourseEntity> responseEntities = registrationService.getStudentCourses(studentId);
@@ -77,7 +77,7 @@ public class StudentController {
             return ResponseEntity.ok(responseEntities);
         }
     }
-
+    
     @PostMapping
     public ResponseEntity<?> insertStudent(@RequestBody StudentEntity student) {
         try {
@@ -86,7 +86,7 @@ public class StudentController {
                         .badRequest()
                         .body("Email already exists");
             }
-
+            
             StudentEntity savedStudent = studentService.save(student);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
@@ -97,7 +97,7 @@ public class StudentController {
                     .body("Error creating student: " + e.getMessage());
         }
     }
-
+    
     @PostMapping("/{studentId}/courses")
     public ResponseEntity<?> insertCourses(@PathVariable int studentId, @RequestBody List<Integer> courseIds) {
         int result = registrationService.registerCourses(studentId, courseIds);
@@ -108,7 +108,7 @@ public class StudentController {
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Courses registration failed. Please try again!");
     }
-
+    
     @PostMapping("/{studentId}/courses/{courseId}")
     public ResponseEntity<?> registerStudentToCourse(@PathVariable int studentId, @PathVariable int courseId) {
         RegistrationEntity responseEntity = registrationService.registerStudentToCourse(studentId, courseId);
@@ -120,7 +120,7 @@ public class StudentController {
                     .body("Courses registration failed. Please try again!");
         }
     }
-
+    
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateStudent(@PathVariable int id, @RequestBody StudentEntity student) {
         Optional<StudentEntity> existingStudent = studentService.findById(id);
@@ -133,7 +133,7 @@ public class StudentController {
         StudentEntity updatedStudent = studentService.save(student);
         return ResponseEntity.ok(updatedStudent);
     }
-
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteStudent(@PathVariable int id) {
         if (!studentService.existsById(id)) {
@@ -144,7 +144,7 @@ public class StudentController {
         studentService.deleteById(id);
         return ResponseEntity.ok("Student deleted successfully");
     }
-
+    
     @DeleteMapping("/{studentId}/courses/{courseId}")
     public ResponseEntity<?> deleteStudentToCourse(@PathVariable int studentId, @PathVariable int courseId) {
         int result = registrationService.unregisterStudentFromCourse(studentId, courseId);

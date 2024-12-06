@@ -12,14 +12,14 @@ public class StudentSpecification {
             return cb.like(root.get("name"), "%" + name + "%");
         };
     }
-
+    
     public static Specification<StudentEntity> hasAgeBetween(Integer ageFrom, Integer ageTo) {
         return (root, query, cb) -> {
             if (ageFrom == null || ageTo == null) return null;
             return cb.between(root.get("age"), ageFrom, ageTo);
         };
     }
-
+    
     public static Specification<StudentEntity> hasEmailEndingWith(String emailDomain) {
         return (root, query, cb) -> {
             if (emailDomain == null) return null;
